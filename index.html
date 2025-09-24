@@ -13,6 +13,7 @@
                 width: 100%;
             }
         </style>
+        <style id="colorshere"></style>
     </head>
     <body>
         <pre id="meow"></pre>
@@ -24,6 +25,11 @@
             value="100"
             onchange="generate();"
         />
+        <label>colors:</label>
+        <select name="colors" id="select" onchange="colorize();">
+            <option>none</option>
+            <option>lgbt</option>
+        </select>
         <script>
             let globes = [
                 `
@@ -346,7 +352,7 @@ Mb?.       -'                              &MM
  \`HMb                                     ,H
   \`9Mb                                  .?P
     *H|   \\b                           .H?
-     \`<!  |R                         .d*'
+     \`&lt;!  |R                         .d*'
        \`~\\                         .d*'
           "-\\_                  _,-"
              \`""\\=v\\_,oooood~~-"'
@@ -577,7 +583,7 @@ MM,.                  \`"""\`"'*'.:_"??*| \`|   |
               ""*#&MMMMMMMMM#b-"
 `,
                 `
-             ._o<>HMMMMMMMMM##o_.
+             ._o&lt;&gt;HMMMMMMMMM##o_.
           _oHMMMMMMMMMMMMMMMMMMM#&b_
        .dHMMMMMMMMMMMMMMMMMMMMMMMb?\\\`\\.
      .dMMMMMMMMMMMMMMMMMMMMMMMMMM*Tp' \`\\.
@@ -655,7 +661,7 @@ P"HMMMMMMMMMMH'           "     q/H  .dD'' ' |
              ._-c>&R?$MMMMMM##o_
           _o$MHMMMMMMMMMMMMMMMMMMHb_
        .~1MMMMMMMMMMMMMMMMMMMMMMMMMMMb.
-     .<bdMM9MMMMMMMMMMMMMMMMMMMMMMMMMMMb.
+     .&lt;bdMM9MMMMMMMMMMMMMMMMMMMMMMMMMMMb.
     /\\M6b>^9R#MMMMMMMMMMMMMMMMMMMMMMMMMDM?
    /dMMMMb##b#dMMMMHMMMMMMMMMMMMMMMMMMMMb*\\
   bMMMMMMMMMMM&MMMMM$MM##HMMMMMMMMMMMMMMM\\-\\
@@ -807,10 +813,22 @@ MMMMMMMMMH                  MMMMMMMMMb  .    |
             let text = document.getElementById("meow");
             let slider = document.getElementById("speed");
             let sliderv = slider.value;
+            let colorscheme = document.getElementById("select");
             let interval;
 
+            function formatGlobe(globe) {
+                let g = globe.split("\n");
+                return Array.from(
+                    g
+                        .entries()
+                        .map((x) => `<span id="col${x[0]}">${x[1]}</span>`),
+                ).join("\n");
+            }
+
+            formattedGlobes = Array.from(globes.map(formatGlobe));
+
             function generate() {
-                text.textContent = globes[t];
+                text.innerHTML = formattedGlobes[t];
                 t++;
                 t %= 30;
                 if (sliderv != slider.value) {
@@ -820,8 +838,43 @@ MMMMMMMMMH                  MMMMMMMMMb  .    |
                 }
             }
 
+            let colorschemes = {
+                none: "",
+                lgbt: `
+                #col1 {color:red ;}
+                #col2 {color:red ;}
+                #col3 {color:red ;}
+                #col4 {color:red ;}
+                #col5 {color:orange ;}
+                #col6 {color:orange ;}
+                #col7 {color:orange ;}
+                #col8 {color:orange ;}
+                #col9 {color: yellow ;}
+                #col10 {color: yellow ;}
+                #col11 {color: yellow ;}
+                #col12 {color: yellow ;}
+                #col13 {color: green ;}
+                #col14 {color: green ;}
+                #col15 {color: green ;}
+                #col16 {color: green ;}
+                #col17 {color: blue ;}
+                #col18 {color: blue ;}
+                #col19 {color: blue ;}
+                #col20 {color: blue ;}
+                #col21 {color: purple ;}
+                #col22 {color: purple ;}
+                #col23 {color: purple ;}
+                #col24 {color: purple ;}
+              `,
+            };
+            function colorize() {
+                document.getElementById("colorshere").innerText =
+                    colorschemes[colorscheme.value];
+            }
+
             interval = setInterval(generate, sliderv);
             generate();
+            colorize();
         </script>
     </body>
 </html>

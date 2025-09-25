@@ -875,6 +875,11 @@ MMMMMMMMMH                  MMMMMMMMMb  .    |
             }
 
             interval = setInterval(generate, sliderv);
+
+            let search = new URLSearchParams(location.search).get("color");
+            if (search !== null && colorschemes[search] !== undefined) {
+                colorscheme.value = search;
+            }
             generate();
             colorize();
         </script>

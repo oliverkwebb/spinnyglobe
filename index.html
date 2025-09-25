@@ -20,8 +20,8 @@
         <input
             type="range"
             id="speed"
-            min="20"
-            max="500"
+            min="25"
+            max="250"
             value="100"
             onchange="generate();"
         />
@@ -29,6 +29,9 @@
         <select name="colors" id="select" onchange="colorize();">
             <option>none</option>
             <option>lgbt</option>
+            <option>trans</option>
+            <option>ukraine</option>
+            <option>germany</option>
         </select>
         <script>
             let globes = [
@@ -833,39 +836,38 @@ MMMMMMMMMH                  MMMMMMMMMb  .    |
                 t %= 30;
                 if (sliderv != slider.value) {
                     clearInterval(interval);
-                    sliderv = slider.value;
+                    sliderv = (slider.value / 10) * (slider.value / 10);
                     interval = setInterval(generate, sliderv);
                 }
             }
 
+            function flag(colors) {
+                var style = "";
+                for (var i = 1; i <= 24; i++) {
+                    style += `#col${i} {color:${colors[Math.ceil(i / (24 / colors.length)) - 1]};}`;
+                }
+                return style;
+            }
+
             let colorschemes = {
                 none: "",
-                lgbt: `
-                #col1 {color:red ;}
-                #col2 {color:red ;}
-                #col3 {color:red ;}
-                #col4 {color:red ;}
-                #col5 {color:orange ;}
-                #col6 {color:orange ;}
-                #col7 {color:orange ;}
-                #col8 {color:orange ;}
-                #col9 {color: yellow ;}
-                #col10 {color: yellow ;}
-                #col11 {color: yellow ;}
-                #col12 {color: yellow ;}
-                #col13 {color: green ;}
-                #col14 {color: green ;}
-                #col15 {color: green ;}
-                #col16 {color: green ;}
-                #col17 {color: blue ;}
-                #col18 {color: blue ;}
-                #col19 {color: blue ;}
-                #col20 {color: blue ;}
-                #col21 {color: purple ;}
-                #col22 {color: purple ;}
-                #col23 {color: purple ;}
-                #col24 {color: purple ;}
-              `,
+                lgbt: flag([
+                    "red",
+                    "orange",
+                    "yellow",
+                    "green",
+                    "blue",
+                    "purple",
+                ]),
+                trans: flag([
+                    "#5BCEFA",
+                    "#F5A9B8",
+                    "#FFF",
+                    "#F5A9B8",
+                    "#5BCEFA",
+                ]),
+                ukraine: flag(["#005BBB", "#FFD500"]),
+                germany: flag(["black", "#d00", "#ffce00"]),
             };
             function colorize() {
                 document.getElementById("colorshere").innerText =
